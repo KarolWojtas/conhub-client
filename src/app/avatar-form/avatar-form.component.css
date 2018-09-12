@@ -1,0 +1,10 @@
+ div.col-md-4, mat-list-item.bg-white.m-2{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex: 1 1 auto;
+}
+
+
+
+

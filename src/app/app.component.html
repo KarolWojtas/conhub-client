@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+
+  <span>Oi m8!</span>
+  <span class="fill-remaining-space"></span>
+  <div *ngIf="isLoggedIn()">
+    <span class="mr-2">
+      <img [src]="'http://localhost:8011/'+principal()+'/avatar'" />
+      {{username | async | json | trimQuotes}}
+    </span>
+    <button mat-raised-button color="accent"  (click)="logout()">Logout</button>
+  </div>
+
+</mat-toolbar>
+<div *ngIf="!isLoggedIn()">
+  <login-form></login-form>
+  <registration-form></registration-form>
+
+</div>
+<avatar-form></avatar-form>
+
+

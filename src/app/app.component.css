@@ -1,0 +1,15 @@
+
+span.fill-remaining-space{
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: end;
+}
+img{
+  max-height: 5%;
+  max-width: 5%;
+  margin: auto;
+  display: inline-block;
+}
+span.image-wrapper{
+  height: 100%;
+}

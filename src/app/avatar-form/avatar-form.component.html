@@ -1,0 +1,39 @@
+<form-template title="Avatar">
+  <form [formGroup]="form">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+            <div class="row">
+              <div class="col-md-4">
+                <canvas #canvas width="200" height="200" class="border mt-3"></canvas>
+              </div>
+              <div class="col-md-7">
+                <mat-list >
+                  <mat-list-item class="bg-white m-2">
+                    <button mat-stroked-button color="primary" (click)="inputFileElement.click()" >
+                      <mat-icon>add_photo_alternate</mat-icon>
+                    </button>
+                    <input #inputFileElement type="file" formControlName="imageInput" (change)="handleFileChange($event)" hidden>
+                  </mat-list-item>
+                  <mat-list-item class="bg-white m-2">
+                    <mat-label *ngIf="selectedFile">{{selectedFile.name}}</mat-label>
+                    <mat-label *ngIf="!selectedFile">No file selected.</mat-label>
+                  </mat-list-item>
+                  <mat-list-item class="bg-white m-2" >
+                    <button mat-raised-button color="primary"  type="submit" [disabled]="form.invalid" (click)="uploadAvatar()">Choose this avatar </button>
+                  </mat-list-item>
+                  <mat-list-item *ngIf="uploadProgress" class="bg-white m-2">
+                    <mat-progress-spinner type="determinate" [value]="uploadProgress" ></mat-progress-spinner>
+                  </mat-list-item>
+                </mat-list>
+              </div>
+            </div>
+
+
+      </div>
+    </div>
+  </div>
+  </form>
+</form-template>
+
