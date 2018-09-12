@@ -3,19 +3,19 @@
   <span>Oi m8!</span>
   <span class="fill-remaining-space"></span>
   <div *ngIf="isLoggedIn()">
-    <span class="mr-2">
-      <img [src]="'http://localhost:8011/'+principal()+'/avatar'" />
+    <span class="m-2">
+      <img [src]="'http://localhost:8765/users/'+principal()+'/avatar'" class="rounded-circle"/>
       {{username | async | json | trimQuotes}}
     </span>
     <button mat-raised-button color="accent"  (click)="logout()">Logout</button>
   </div>
-
+  <button *ngIf="!isLoggedIn()" mat-flat-button color="accent" (click)="openSignDialog()">Sign in | Sign up</button>
 </mat-toolbar>
-<div *ngIf="!isLoggedIn()">
-  <login-form></login-form>
-  <registration-form></registration-form>
-
-</div>
-<avatar-form></avatar-form>
+<form-template title="Avatar">
+  <avatar-form></avatar-form>
+</form-template>
+<form-template title="Change password">
+  <password-change></password-change>
+</form-template>
 
 

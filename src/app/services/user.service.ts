@@ -29,7 +29,7 @@ export class UserService {
               this.handleError
       )
   }
-  fetchReqisterUser(user: RegistrationCredentials){
+  fetchRegisterUser(user: RegistrationCredentials){
       const headers = new HttpHeaders()
       headers.append('Content-Type', 'application/json')
       return this.http.post(env.base_url+env.user_base_url, user,)//{headers: headers,responseType:'text'})
@@ -38,6 +38,9 @@ export class UserService {
     const fd = new FormData();
     fd.append('image', this.blobToFile(blobImage, imageName) );
     return this.http.post(env.base_url+env.user_base_url+username+env.user_avatar, fd, {reportProgress: true, observe: "events"})
+  }
+  fetchChangePassword(username: string, newPassword: string){
+    return this.http.patch(env.base_url+env.user_base_url+username,{password: newPassword})
   }
   handleError = catchError((error: HttpErrorResponse) => {
       switch(error.status){

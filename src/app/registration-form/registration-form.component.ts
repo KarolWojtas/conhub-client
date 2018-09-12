@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter} from '@angular/core';
 import { UserService } from "src/app/services/user.service";
 import { FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
 import {  fromEvent } from "rxjs";
@@ -19,6 +19,7 @@ import {SET_USER} from "../redux/user-state-actions";
 export class RegistrationFormComponent implements OnInit {
   constructor(private userService: UserService, private authService: AuthService, private ngRedux: NgRedux<IMainState>) { }
   isUsernameUnique: boolean
+  @Output('success') registrationSuccess = new EventEmitter()
   ngOnInit() {
       
       fromEvent(this.usernameInput.nativeElement, 'keydown').pipe(
@@ -59,26 +60,12 @@ export class RegistrationFormComponent implements OnInit {
       return this.form.get('passwordGroup')
   }
   registerUser(){
-      const user = {
-              username: this.username.value,
-              password: this.password.value,
-              roles: 'ROLE_USER'
-      }
-      this.userService.fetchReqisterUser(user).subscribe(response => {
-          console.log(response)
-          this.authService.fetchToken({username: user.username, password: user.password})
-          .subscribe(response => {
-              this.form.reset('', {emitEvent:false, onlySelf:false})
-          })
-      })
-  }
-  registerUser2(){
     const user = {
       username: this.username.value,
       password: this.password.value,
       roles: 'ROLE_USER'
     }
-    this.userService.fetchReqisterUser(user).pipe(
+    this.userService.fetchRegisterUser(user).pipe(
       switchMap((response) => {
         return this.authService.fetchToken({username: user.username, password: user.password})
       }),
@@ -88,6 +75,7 @@ export class RegistrationFormComponent implements OnInit {
       })
     ).subscribe(user => {
       this.ngRedux.dispatch({type: SET_USER, user: user})
+      this.registrationSuccess.emit(true)
     })
 
   }

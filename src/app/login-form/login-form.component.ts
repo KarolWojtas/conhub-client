@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AuthService, OauthTokenResponse} from "src/app/services/auth.service";
 import {NgRedux, select} from "@angular-redux/store";
 import { User } from "src/app/redux/user-store";
@@ -6,6 +6,8 @@ import { FormControl, Validators, AbstractControl, FormGroup } from "@angular/fo
 import {UserService} from "../services/user.service";
 import {IMainState} from "../redux/main-store";
 import {SET_USER} from "../redux/user-state-actions";
+import {SignInDialogComponent} from "../sign-in-dialog/sign-in-dialog.component";
+import {MatDialogRef} from "@angular/material";
 
 
 @Component({
@@ -16,7 +18,7 @@ import {SET_USER} from "../redux/user-state-actions";
 export class LoginFormComponent implements OnInit {
   @select(store => store.userStore.user) user: User
   constructor(private authService: AuthService, private userService: UserService, private ngRedux: NgRedux<IMainState>) { }
-
+  @Output('success') loginSuccess = new EventEmitter()
   ngOnInit() {
   }
   form = new FormGroup({
@@ -46,9 +48,7 @@ export class LoginFormComponent implements OnInit {
   handleLoginSuccessful(response: OauthTokenResponse){
     this.userService.fetchUserInfo(this.authService.principal)
       .subscribe(user => this.ngRedux.dispatch({type: SET_USER, user: user}))
-    this.form.reset('', {onlySelf: false, emitEvent: false})
-    this.wasLoginUnsuccessful = false
-
+    this.loginSuccess.emit(true)
   }
 }
 

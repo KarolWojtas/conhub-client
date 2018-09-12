@@ -2,14 +2,16 @@
 span.fill-remaining-space{
   display: flex;
   flex: 1 1 auto;
-  justify-content: end;
+
 }
 img{
-  max-height: 5%;
-  max-width: 5%;
-  margin: auto;
+  object-fit: contain;
   display: inline-block;
+  max-width:40px;
+  max-height:40px;
+  margin:auto;
+
+
 }
-span.image-wrapper{
-  height: 100%;
-}
+
+

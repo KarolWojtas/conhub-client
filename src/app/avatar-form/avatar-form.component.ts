@@ -3,6 +3,7 @@ import {UserService} from "../services/user.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../services/auth.service";
 import {HttpEvent, HttpEventType, HttpProgressEvent} from "@angular/common/http";
+import {MatSnackBar} from "@angular/material";
 
 @Component({
   selector: 'avatar-form',
@@ -20,7 +21,7 @@ export class AvatarFormComponent implements OnInit {
   @ViewChild('canvas') canvasElementRef: ElementRef
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  constructor(private userService: UserService, private authService: AuthService) { }
+  constructor(private userService: UserService, private authService: AuthService, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.canvas = this.canvasElementRef.nativeElement
@@ -49,10 +50,11 @@ export class AvatarFormComponent implements OnInit {
   handleSuccess(event: HttpEvent<any>){
     this.uploadProgress = 0;
     this.form.reset('',{onlySelf:false, emitEvent:false})
+    this.snackBar.open('Avatar image successfully uploaded')
   }
   handleError(){
-    console.log('error')
     this.uploadProgress = 0;
+    this.snackBar.open('Error uploading avatar image')
   }
   fillCanvas(event){
     this.selectedFile = event.target.files[0];

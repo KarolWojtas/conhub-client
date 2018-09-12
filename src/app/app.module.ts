@@ -18,6 +18,9 @@ import { DevToolsExtension} from "@angular-redux/store";
 import { TrimQuotesPipe } from './pipes/trim-quotes.pipe';
 import { AvatarFormComponent } from './avatar-form/avatar-form.component';
 import { FormTemplateComponent } from './form-template/form-template.component';
+import { PasswordChangeComponent } from './password-change/password-change.component';
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material";
+import { SignInDialogComponent } from './sign-in-dialog/sign-in-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,14 @@ import { FormTemplateComponent } from './form-template/form-template.component';
     RegistrationFormComponent,
     TrimQuotesPipe,
     AvatarFormComponent,
-    FormTemplateComponent
+    FormTemplateComponent,
+    PasswordChangeComponent,
+    SignInDialogComponent
+  ],
+  entryComponents:[
+    SignInDialogComponent,
+    LoginFormComponent,
+    RegistrationFormComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +50,8 @@ import { FormTemplateComponent } from './form-template/form-template.component';
               UserService,
               {provide: ErrorHandler, useClass: AppErrorHandler},
               {provide: HTTP_INTERCEPTORS, useClass: TokenHttpInterceptor, multi: true},
+              {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}
+
               ],
   bootstrap: [AppComponent]
 })
