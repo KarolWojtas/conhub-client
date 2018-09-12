@@ -27,6 +27,7 @@
     "bootstrap": "^4.1.3",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
+    "karma-opera-launcher": "^1.0.0",
     "material-design-icons": "^3.0.1",
     "redux": "^4.0.0",
     "rxjs": "^6.0.0",

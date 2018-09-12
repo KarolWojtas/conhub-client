@@ -32,8 +32,14 @@ export class LoginFormComponent implements OnInit {
   get password(){
       return this.form.get('password')
   }
+  usernameValue(){
+    return this.username.value
+  }
+  passwordValue(){
+    return this.password.value
+  }
   login(){
-      const credentials = {username: this.username.value, password: this.password.value}
+      const credentials = {username: this.usernameValue(), password: this.passwordValue()}
       this.authService.fetchToken(credentials)
           .subscribe(response => {
           this.handleLoginSuccessful(response)
