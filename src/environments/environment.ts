@@ -9,7 +9,13 @@ export const environment = {
   user_base_url: '/users/',
   check_username_unique_url: '/users/checkusername/',
   user_avatar: '/avatar',
-  change_username: '/changeusername/'
+  change_username: '/changeusername/',
+  concerts: {
+    base_url: '/content/concerts'
+  },
+  venues : {
+    base_url: '/content/venues'
+  }
 };
 
 /*

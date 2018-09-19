@@ -19,8 +19,11 @@ import { TrimQuotesPipe } from './pipes/trim-quotes.pipe';
 import { AvatarFormComponent } from './avatar-form/avatar-form.component';
 import { FormTemplateComponent } from './form-template/form-template.component';
 import { PasswordChangeComponent } from './password-change/password-change.component';
-import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatNativeDateModule} from "@angular/material";
 import { SignInDialogComponent } from './sign-in-dialog/sign-in-dialog.component';
+import { ConcertSearchComponent } from './content/concert-search/concert-search.component';
+import {ConcertService} from "./content/services/concert.service";
+import {VenueService} from "./content/services/venue.service";
 
 @NgModule({
   declarations: [
@@ -31,7 +34,8 @@ import { SignInDialogComponent } from './sign-in-dialog/sign-in-dialog.component
     AvatarFormComponent,
     FormTemplateComponent,
     PasswordChangeComponent,
-    SignInDialogComponent
+    SignInDialogComponent,
+    ConcertSearchComponent
   ],
   entryComponents:[
     SignInDialogComponent,
@@ -44,15 +48,17 @@ import { SignInDialogComponent } from './sign-in-dialog/sign-in-dialog.component
     HttpClientModule,
     NgReduxModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatNativeDateModule
   ],
   providers: [AuthService,
-              UserService,
-              {provide: ErrorHandler, useClass: AppErrorHandler},
-              {provide: HTTP_INTERCEPTORS, useClass: TokenHttpInterceptor, multi: true},
-              {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}}
-
-              ],
+    UserService,
+    {provide: ErrorHandler, useClass: AppErrorHandler},
+    {provide: HTTP_INTERCEPTORS, useClass: TokenHttpInterceptor, multi: true},
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}},
+    ConcertService,
+    VenueService
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

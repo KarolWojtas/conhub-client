@@ -4,11 +4,12 @@ import { User } from "src/app/redux/user-store";
 import {Observable} from "rxjs";
 import { AuthService} from "./services/auth.service";
 import {UserService} from "./services/user.service";
-import {SET_USER} from "./redux/user-state-actions";
+import {SAVE_VENUES, SET_USER} from "./redux/user-state-actions";
 import {IMainState} from "./redux/main-store";
 import { environment as env} from "../environments/environment";
 import {MatDialog} from "@angular/material";
 import {SignInDialogComponent} from "./sign-in-dialog/sign-in-dialog.component";
+import {VenueService} from "./content/services/venue.service";
 
 @Component({
   selector: 'app-root',
