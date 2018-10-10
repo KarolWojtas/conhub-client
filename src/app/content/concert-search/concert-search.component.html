@@ -1,0 +1,129 @@
+<div class="container-fluid mt-2" #pageContainer >
+  <div class="row">
+    <div class="col-md-12">
+      <form [formGroup]="form" action="#">
+        <mat-list>
+        <div class="row">
+          <div class="col-md-12" >
+            <mat-form-field >
+              <mat-label>Enter phrase:</mat-label>
+              <input matInput type="text" formControlName="name" autocomplete="off"/>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field>
+              <mat-select multiple formControlName="venues" placeholder="Venues:">
+                <mat-option *ngFor="let venue of venuesList | async" [value]="venue.name"  >{{venue.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput [matDatepicker]="afterDatepicker" formControlName="after" autocomplete="off" [matDatepickerFilter]="afterFilter" >
+              <mat-label>After date:</mat-label>
+              <mat-datepicker-toggle matSuffix [for]="afterDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #afterDatepicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field>
+              <mat-select formControlName="by" placeholder="Sort by:">
+                <mat-option [value]="'name'">Name</mat-option>
+                <mat-option [value]="'venue'">Venue</mat-option>
+                <mat-option [value]="'date'">Date</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput [matDatepicker]="beforeDatepicker" formControlName="before" autocomplete="off" [matDatepickerFilter]="beforeFilter">
+              <mat-label>Before date:</mat-label>
+              <mat-datepicker-toggle matSuffix [for]="beforeDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #beforeDatepicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <mat-slide-toggle formControlName = "direction" >
+              <span [hidden]="!direction.value">Sort ascending</span>
+              <span [hidden]="direction.value">Sort descending</span>
+            </mat-slide-toggle>
+          </div>
+          <div class="col-md-6">
+            <button mat-raised-button  type="submit" (click)="search()">Search</button>
+          </div>
+        </div>
+        </mat-list>
+      </form>
+      <div class="row mt-2">
+
+          <mat-chip-list class="mt-2">
+            <mat-chip [hidden] = "name.value==''"  >{{name.value}}
+              <mat-icon (click) = "name.setValue('')">cancel</mat-icon>
+            </mat-chip>
+            <mat-chip *ngFor="let venue of venues.value">{{venue}}
+              <mat-icon (click)="removeVenueChip(venue)">cancel</mat-icon>
+            </mat-chip>
+            <mat-chip [hidden]="!after.value">
+              after {{after.value | date}}
+              <mat-icon (click)="after.setValue('')">cancel</mat-icon>
+            </mat-chip>
+            <mat-chip [hidden]="!before.value">
+              before {{before.value | date}}
+              <mat-icon (click)="before.setValue('')">cancel</mat-icon>
+            </mat-chip>
+
+          </mat-chip-list>
+
+      </div>
+
+    </div>
+  </div>
+    <div class="row">
+      <div class="col-md-12 mt-2 mb-2" #concertTable >
+      <table mat-table [dataSource]="concerts" [hidden]="concerts.length<=0" class="mat-elevation-z8" >
+        <ng-container matColumnDef="venue">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Venue </th>
+          <td mat-cell *matCellDef="let concert">
+            <img [venueAvatar]="concert.venue.id">
+             <span>&emsp;{{concert.venue.name}}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+          <td mat-cell *matCellDef="let concert"> {{concert.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+          <td mat-cell *matCellDef="let concert"> {{concert.date | date:'short'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="link">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Concert page</th>
+          <td mat-cell *matCellDef="let concert"> <button mat-stroked-button [routerLink]="['/concert',concert.id]">Details</button> </td>
+        </ng-container>
+        <ng-container matColumnDef="interest">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Interest </th>
+          <td mat-cell *matCellDef="let concert">
+            <button mat-icon-button >
+              <mat-icon *ngIf="isConcertInInterest(concert) | async; else noInterest" (click)="removeInterest(concert)">favorite</mat-icon>
+            </button>
+            <ng-template #noInterest>
+              <button mat-icon-button  >
+                <mat-icon (click)="addInterest(concert)">favorite_border</mat-icon>
+              </button>
+            </ng-template>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+      </table>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,9 @@
+
+<mat-card>
+  <mat-card-subtitle>
+    <avatar-image [username]="comment.username"></avatar-image>&emsp;{{comment.username}}</mat-card-subtitle>
+  <mat-card-content>
+    <span>{{comment.text}}</span>
+  </mat-card-content>
+  <mat-card-footer class="float-right">{{comment.timestamp | date:'short'}}</mat-card-footer>
+</mat-card>

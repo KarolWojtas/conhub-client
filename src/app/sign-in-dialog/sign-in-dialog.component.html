@@ -1,0 +1,21 @@
+<mat-dialog-content>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mt-2">
+        <form-template title="Sign in">
+          <login-form (success)="handleSuccess($event)"></login-form>
+        </form-template>
+      </div>
+
+      <div class="col-md-6 mt-2">
+        <form-template title="Sign up">
+          <registration-form (success)="handleSuccess($event)"></registration-form>
+        </form-template>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-flat-button mat-dialog-close cdkFocusInitial >Back</button>
+</mat-dialog-actions>
+

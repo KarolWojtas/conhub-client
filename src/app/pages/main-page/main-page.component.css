@@ -1,0 +1,10 @@
+div.jumbotron{
+  background-image: url("/src/assets/jumbotron-bg.jpg");
+  min-width: 30vh;
+  background-position: center;
+  justify-content: center;
+  display: flex;
+  background-repeat: no-repeat;
+
+
+}

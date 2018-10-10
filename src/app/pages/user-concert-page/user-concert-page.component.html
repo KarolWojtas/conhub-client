@@ -1,0 +1,40 @@
+<div class="container mt-4 mb-2" pageContainer>
+    <h2>Concerts you're interested in:</h2>
+  <a target="_blank" class="pdf" mat-icon-button color="warn" [href]="this.pdfUrl">Download as <mat-icon>picture_as_pdf</mat-icon></a>
+  <div class="row">
+    <div class="col-md-12 mt-2">
+      <table mat-table [dataSource]="concerts" *ngIf="concerts.length>0" class="mat-elevation-z8">
+        <ng-container matColumnDef="venue">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Venue </th>
+          <td mat-cell *matCellDef="let concert">
+            <img  [venueAvatar]="concert.venue.id" [src]="env.base_url+env.venues.base_url+'/'+concert.venue.id+'/avatar'">
+            <span>&emsp;{{concert.venue.name}}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+          <td mat-cell *matCellDef="let concert"> {{concert.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+          <td mat-cell *matCellDef="let concert"> {{concert.date | date:'short'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="link">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Concert page</th>
+          <td mat-cell *matCellDef="let concert"> <button mat-stroked-button [routerLink]="['/concert',concert.id]">Details</button> </td>
+        </ng-container>
+        <ng-container matColumnDef="interest">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Interest </th>
+          <td mat-cell *matCellDef="let concert">
+            <button mat-icon-button matTooltip="Remove this from followed concerts">
+              <mat-icon (click)="removeInterest(concert)">not_interested</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+      </table>
+
+      </div>
+  </div>
+</div>

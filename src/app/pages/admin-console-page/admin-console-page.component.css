@@ -1,0 +1,9 @@
+.vertical-radio-group {
+  display: inline-flex;
+  flex-direction: column;
+  max-height: 30vh;
+}
+
+.vertical-radio-button {
+  margin: 5px;
+}

@@ -1,0 +1,7 @@
+div.col-md-2{
+
+  justify-content: center;
+  align-content: center;
+  display: flex;
+}
+

@@ -1,0 +1,43 @@
+<div pageContainer class="container">
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Upload venue avatar
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form-template title="Upload avatar for venue">
+        <div class="row mt-2">
+          <div class="col-md-2">
+            <form [formGroup]="form">
+              <mat-radio-group formControlName="venueCheckbox" *ngIf="venuesLoaded$ | async; else noVenues" class="vertical-radio-group" cdkScrollable>
+                <mat-label class="vertical-radio-button">Venues:</mat-label>
+                <mat-radio-button *ngFor="let venue of venues$ | async" [value]="venue.id" class="vertical-radio-button"
+                                  (change)="selectVenue()">
+                  {{venue.name}}
+                </mat-radio-button>
+              </mat-radio-group>
+              <ng-template #noVenues>
+                <span>No venues loaded</span>
+              </ng-template>
+            </form>
+          </div>
+          <div class="col-md-3">
+            <mat-card *ngIf="selectedVenueInfo | async as selectedVenue">
+              <mat-card-subtitle>{{selectedVenue.name}}</mat-card-subtitle>
+              <mat-card-content >
+                <img mat-card-lg-image [src]="selectedVenueAvatarUrl"/>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-md-7">
+            <avatar-form [target]="target" [venueId]="venueCheckbox.value">
+            </avatar-form>
+          </div>
+        </div>
+      </form-template>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>
+

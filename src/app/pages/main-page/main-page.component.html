@@ -1,0 +1,13 @@
+<div class="jumbotron rounded-0">
+  <h1 class="display-4">Easily search and track concerts</h1>
+</div>
+<div pageContainer class="container">
+  <mat-card>
+    <mat-card-title>Concerts from venues:</mat-card-title>
+    <mat-card-content>
+      <mat-card *ngFor="let venue of venues | async">
+        {{venue.name}}
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>
