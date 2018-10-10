@@ -24,6 +24,21 @@ import { SignInDialogComponent } from './sign-in-dialog/sign-in-dialog.component
 import { ConcertSearchComponent } from './content/concert-search/concert-search.component';
 import {ConcertService} from "./content/services/concert.service";
 import {VenueService} from "./content/services/venue.service";
+import {RouterModule} from "@angular/router";
+import { UserConcertPageComponent } from './pages/user-concert-page/user-concert-page.component';
+import { UserSettingsPageComponent } from './pages/user-settings-page/user-settings-page.component';
+import { ConcertSearchPageComponent } from './pages/concert-search-page/concert-search-page.component';
+import { MainPageComponent } from './pages/main-page/main-page.component';
+import { CommentComponent } from './content/comment/comment.component';
+import { ConcertPageComponent } from './pages/concert-page/concert-page.component';
+import { PageContainerDirective } from './directives/page-container.directive';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AvatarImageComponent } from './avatar-image/avatar-image.component';
+import { AdminConsolePageComponent } from './pages/admin-console-page/admin-console-page.component';
+import {InterestService} from "./content/services/interest.service";
+import {UserPageAuthGuard} from "./pages/auth-guards/user-page-auth-guard";
+import {AdminPageAuthGuard} from "./pages/auth-guards/admin-page-auth-guard";
+import { VenueAvatarDirective } from './directives/venue-avatar.directive';
 
 @NgModule({
   declarations: [
@@ -35,7 +50,17 @@ import {VenueService} from "./content/services/venue.service";
     FormTemplateComponent,
     PasswordChangeComponent,
     SignInDialogComponent,
-    ConcertSearchComponent
+    ConcertSearchComponent,
+    UserConcertPageComponent,
+    UserSettingsPageComponent,
+    ConcertSearchPageComponent,
+    MainPageComponent,
+    CommentComponent,
+    ConcertPageComponent,
+    PageContainerDirective,
+    AvatarImageComponent,
+    AdminConsolePageComponent,
+    VenueAvatarDirective
   ],
   entryComponents:[
     SignInDialogComponent,
@@ -49,10 +74,22 @@ import {VenueService} from "./content/services/venue.service";
     NgReduxModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    FontAwesomeModule,
+    RouterModule.forRoot([
+      {path: "user/:username/concerts", component: UserConcertPageComponent, canActivate: [UserPageAuthGuard]},
+      {path: "user/:username/settings", component: UserSettingsPageComponent, canActivate: [UserPageAuthGuard]},
+      {path: "search", component: ConcertSearchPageComponent},
+      {path: 'concert/:concertId', component: ConcertPageComponent},
+      {path: 'admin', component: AdminConsolePageComponent, canActivate: [AdminPageAuthGuard]},
+      {path: "**", component: MainPageComponent}
+    ])
   ],
   providers: [AuthService,
     UserService,
+    UserPageAuthGuard,
+    AdminPageAuthGuard,
+    InterestService,
     {provide: ErrorHandler, useClass: AppErrorHandler},
     {provide: HTTP_INTERCEPTORS, useClass: TokenHttpInterceptor, multi: true},
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}},

@@ -8,6 +8,7 @@ export class AppErrorHandler implements ErrorHandler{
             console.log(`Auth error: ${error.message}`)
         } else {
             console.log(`Error: ${error.message}`)
+
         }
     }
     

@@ -1,9 +1,10 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {UserService} from "../services/user.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../services/auth.service";
 import {HttpEvent, HttpEventType, HttpProgressEvent} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material";
+import {VenueService} from "../content/services/venue.service";
 
 @Component({
   selector: 'avatar-form',
@@ -14,6 +15,8 @@ export class AvatarFormComponent implements OnInit {
    selectedFile: File
    uploadProgress = 0
     canvasScale = 200;
+   @Input('target') target: ImageTarget
+  @Input('venueId') venueId: string
   form = new FormGroup({
     imageInput: new FormControl('', Validators.required),
     canvasInput: new FormControl('')
@@ -21,7 +24,7 @@ export class AvatarFormComponent implements OnInit {
   @ViewChild('canvas') canvasElementRef: ElementRef
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  constructor(private userService: UserService, private authService: AuthService, public snackBar: MatSnackBar) { }
+  constructor(private userService: UserService, private authService: AuthService, public snackBar: MatSnackBar, public venueService: VenueService) { }
 
   ngOnInit() {
     this.canvas = this.canvasElementRef.nativeElement
@@ -34,14 +37,33 @@ export class AvatarFormComponent implements OnInit {
   }
   uploadAvatar(){
     this.canvas.toBlob((blob)=> {
-      this.userService.fetchPostAvatar(blob, this.selectedFile.name, this.authService.principal)
-        .subscribe(event => {
-          switch(event.type){
-            case HttpEventType.UploadProgress : this.handleProgress(event); break;
-            case HttpEventType.Response : this.handleSuccess(event); break;
-          }
-        }, error => this.handleError())
+      switch(this.target){
+        case ImageTarget.USER_AVATAR : this.handleUserAvatarUpload(blob); break;
+        case ImageTarget.VENUE_AVATAR: this.handleVenueAvatarUpload(blob); break;
+        default: this.handleUserAvatarUpload(blob)
+      }
+
     },"image/jpeg")
+
+  }
+  handleUserAvatarUpload(blob: Blob){
+    this.userService.fetchPostAvatar(blob, this.selectedFile.name, this.authService.principal)
+      .subscribe(event => {
+        switch(event.type){
+          case HttpEventType.UploadProgress : this.handleProgress(event); break;
+          case HttpEventType.Response : this.handleSuccess(event); break;
+        }
+      }, error => this.handleError())
+  }
+  handleVenueAvatarUpload(blob: Blob){
+    if(this.venueId == undefined) throw Error('Venue id must be specified')
+    this.venueService.fetchPostAvatar(this.venueId, this.selectedFile.name, blob)
+      .subscribe(event => {
+      switch(event.type){
+        case HttpEventType.UploadProgress : this.handleProgress(event); break;
+        case HttpEventType.Response : this.handleSuccess(event); break;
+      }
+    }, error => this.handleError())
 
   }
   handleProgress(event){
@@ -96,4 +118,7 @@ export interface CanvasDirections{
   startY: number,
   endX: number,
   endY: number,
+}
+export enum ImageTarget{
+  USER_AVATAR, VENUE_AVATAR
 }

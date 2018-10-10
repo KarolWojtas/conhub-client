@@ -1,25 +1,46 @@
 <mat-toolbar color="primary">
-
-  <span>Oi m8!</span>
+  <button mat-icon-button (click)="sideNav.toggle()"><mat-icon>menu</mat-icon></button>
   <span class="fill-remaining-space"></span>
   <div *ngIf="isLoggedIn()">
     <span class="m-2">
-      <img [src]="'http://localhost:8765/users/'+principal()+'/avatar'" class="rounded-circle"/>
+      <avatar-image [username]="principal()"></avatar-image>
       {{username | async | json | trimQuotes}}
     </span>
     <button mat-raised-button color="accent"  (click)="logout()">Logout</button>
   </div>
   <button *ngIf="!isLoggedIn()" mat-flat-button color="accent" (click)="openSignDialog()">Sign in | Sign up</button>
 </mat-toolbar>
-<form-template title="Avatar">
-  <avatar-form></avatar-form>
-</form-template>
-<form-template title="Change password">
-  <password-change></password-change>
-</form-template>
-<form-template title="Search concerts">
-  <concert-search></concert-search>
-</form-template>
+<mat-sidenav-container>
+  <mat-sidenav #sideNav [mode] = "mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches">
+    <mat-nav-list>
+      <mat-list-item>
+        <mat-icon matListIcon>home</mat-icon>
+        <span matLine routerLink="/">Home</span>
+      </mat-list-item>
+      <mat-list-item routerLink="/search">
+        <mat-icon matListIcon>search</mat-icon>
+        <span matLine mat-list-item >Search</span>
+      </mat-list-item>
+      <mat-list-item [matMenuTriggerFor]="userMenu" >
+        <mat-icon matListIcon>person</mat-icon>
+        <span mat-list-item matLine >User</span>
+      </mat-list-item>
+        <mat-menu #userMenu="matMenu" [overlapTrigger]="false" >
+          <span mat-menu-item [routerLink]="['user','username','concerts']"><mat-icon>library_music</mat-icon>
+            Concerts liked</span>
+          <span mat-menu-item [routerLink]="['user','username','settings']"><mat-icon>settings</mat-icon>
+            User settings</span>
+        </mat-menu>
+      <mat-list-item *ngIf="isAdmin()">
+        <mat-icon matListIcon>vpn_key</mat-icon>
+        <span matLine [routerLink]="['admin']">Admin</span>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 
 
 

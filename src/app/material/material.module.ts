@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   MatButtonModule,
   MatFormFieldModule,
@@ -14,7 +15,13 @@ import {
   MatListModule,
   MatSnackBarModule,
   MatDialogModule,
-  MatChipsModule, MatSelectModule, MatSlideToggleModule, MatDatepickerModule, MatTableModule
+  MatChipsModule,
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatDatepickerModule,
+  MatTableModule,
+  MatExpansionModule,
+  MatMenuModule, MatTreeModule, MatRadioModule, MatTooltipModule
 } from '@angular/material';
 
 
@@ -38,7 +45,11 @@ import {
     MatSelectModule,
     MatSlideToggleModule,
     MatDatepickerModule,
-    MatTableModule
+    MatTableModule,
+    MatMenuModule,
+    MatRadioModule,
+    MatExpansionModule,
+    MatTooltipModule
     ]
 })
 export class MaterialModule { }

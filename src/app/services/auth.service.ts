@@ -5,9 +5,10 @@ import { environment as env } from "src/environments/environment";
 import { catchError, tap } from 'rxjs/operators';
 import { AuthError } from "src/app/errors/AuthError";
 import { NgRedux } from "@angular-redux/store/lib/src";
-import {SET_USER, UNSET_USER} from "src/app/redux/user-state-actions";
+import {REMOVE_ALL_INTERESTS, REMOVE_CONCERT_INTEREST, SET_USER, UNSET_USER} from "src/app/redux/user-state-actions";
 import { IMainState } from "src/app/redux/main-store";
 import { JwtHelperService } from '@auth0/angular-jwt';
+import {Router} from "@angular/router";
 
 
 @Injectable({
@@ -18,7 +19,7 @@ export class AuthService {
   basicAuth = 'Basic '+btoa(this.clientId+':')
   jwtHelper = new JwtHelperService()
   
-  constructor(private http: HttpClient, private ngRedux: NgRedux<IMainState>) { }
+  constructor(private http: HttpClient, private ngRedux: NgRedux<IMainState>, private router: Router) { }
   
   fetchToken(credentials: Credentials){
       const params = new URLSearchParams();
@@ -38,8 +39,10 @@ export class AuthService {
           )
   }
   public logout(){
+    this.router.navigate(['/'])
     localStorage.removeItem('token')
     this.ngRedux.dispatch({type: UNSET_USER})
+    this.ngRedux.dispatch({type: REMOVE_ALL_INTERESTS})
   }
   get token(){
       const token = localStorage.getItem('token')
@@ -57,7 +60,14 @@ export class AuthService {
       return this.jwtHelper.isTokenExpired(this.token, 5)
   }
   get principal(){
+    if(this.token!=undefined){
       return (this.jwtHelper.decodeToken(this.token) as Token).user_name
+    }
+  }
+  get principalRole(){
+    if(this.token!=undefined){
+      return (this.jwtHelper.decodeToken(this.token) as Token).authorities.map(authority => authority.replace('"', " ").trim())
+    }
   }
   
 }

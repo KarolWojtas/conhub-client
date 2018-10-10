@@ -36,7 +36,7 @@ export class UserService {
   }
   fetchPostAvatar(blobImage: Blob,imageName: string, username: string){
     const fd = new FormData();
-    fd.append('image', this.blobToFile(blobImage, imageName) );
+    fd.append('image', blobToFile(blobImage, imageName) );
     return this.http.post(env.base_url+env.user_base_url+username+env.user_avatar, fd, {reportProgress: true, observe: "events"})
   }
   fetchChangePassword(username: string, newPassword: string){
@@ -48,16 +48,16 @@ export class UserService {
       default: throw new AppError()
       }
   })
-  public blobToFile = (theBlob: Blob, fileName:string): File => {
-    let b: any = theBlob;
-    b.lastModifiedDate = new Date();
-    b.name = fileName;
-
-    return <File>theBlob;
-  }
 }
 export interface RegistrationCredentials{
     username: string,
     password: string,
     roles: string
+}
+export const blobToFile = (theBlob: Blob, fileName:string): File => {
+  let b: any = theBlob;
+  b.lastModifiedDate = new Date();
+  b.name = fileName;
+
+  return <File>theBlob;
 }

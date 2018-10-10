@@ -10,8 +10,16 @@ img{
   max-width:40px;
   max-height:40px;
   margin:auto;
-
-
+}
+mat-toolbar.footer{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+}
+mat-sidenav{
+  height: 100%;
 }
 
 
